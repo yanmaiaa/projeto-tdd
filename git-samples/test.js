@@ -1,1 +1,0 @@
-console.log("Teste de configuração no git")
