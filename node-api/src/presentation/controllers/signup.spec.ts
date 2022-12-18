@@ -1,5 +1,5 @@
 import { SignUpController } from './SignUp';
-
+import {MissingParamError} from '../errors/missing-param-error';
 
 describe('SignUp Controller', () => {  
   test('Se não enviar um nome no body da requisição tipo post retorna o erro 400', () => {
@@ -13,7 +13,7 @@ describe('SignUp Controller', () => {
     }
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Sem parametro: nome')) //comparar objetos com o toBe não funciona pois ele compara "ponteiro" a "ponteiro", necessitando que os dois fossem idênticos, logo, trocaremos o toBe para comparar só os valores do objeto e ver se são iguais
+    expect(httpResponse.body).toEqual(new MissingParamError('name')) //comparar objetos com o toBe não funciona pois ele compara "ponteiro" a "ponteiro", necessitando que os dois fossem idênticos, logo, trocaremos o toBe para comparar só os valores do objeto e ver se são iguais
   })
 })
 
@@ -29,6 +29,6 @@ describe('SignUp Controller', () => {
     }
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Sem parametro: email')) 
+    expect(httpResponse.body).toEqual(new MissingParamError('email')) 
   })
 })
