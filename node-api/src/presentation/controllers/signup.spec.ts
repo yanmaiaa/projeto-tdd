@@ -1,9 +1,11 @@
+import { InvalidParamError } from './../errors/invalid-param-error';
 import { SignUpController } from './SignUp';
 import {MissingParamError} from '../errors/missing-param-error';
 
 const makeSut = (): SignUpController => {
-  return new SignUpController();
+  return new SignUpController(); //quando criarmos novas dependencias, não precisaremos mudar nenhum dos construtores dos testes
 }//factory
+
 describe('SignUp Controller', () => {  
   test('Se não enviar um nome no body da requisição tipo post retorna o erro 400', () => {
     const sut = makeSut();
@@ -65,5 +67,22 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation')) 
+  })
+})
+
+describe('SignUp Controller', () => {  
+  test('Se o email for invalido deverá retornar 400', () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'qualquer_nome',
+        email: 'email_invalido@mail.com',
+        password: 'qualquer_password',
+        passwordConfirmation: 'qualquer_password',
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('email')) 
   })
 })
